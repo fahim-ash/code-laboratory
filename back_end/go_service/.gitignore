@@ -1,0 +1,17 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs and debugging
+*.log
+*.out
+logs/
+
+# Environment files
+.env
+
+# IDE or Editor files
+.vscode/
+.idea/

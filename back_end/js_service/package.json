@@ -1,0 +1,10 @@
+{
+    "name": "js_service",
+    "version": "1.0.0",
+    "main": "app/index.js",
+    "dependencies": {
+        "express": "^4.18.2",
+        "sequelize": "^6.32.1",
+        "dotenv": "^16.0.3"
+    }
+}

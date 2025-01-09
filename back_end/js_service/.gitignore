@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+*.log
+logs/
+
+# Debugging
+*.pid
+*.pid.lock
