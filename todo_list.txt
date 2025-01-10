@@ -1,0 +1,1 @@
+---> Token-based Authentication with Django REST Framework using Refresh Token for session management with long-term validity.
