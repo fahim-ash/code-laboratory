@@ -1,1 +1,2 @@
 ---> Token-based Authentication with Django REST Framework using Refresh Token for session management with long-term validity.
+---> Creating Interactive login page, service list page, file upload and download page, file list page.
