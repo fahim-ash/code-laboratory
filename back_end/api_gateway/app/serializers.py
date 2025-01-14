@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Demo, CustomUser
+from .models import Demo, CustomUser, Server, UrlToServer
 from django.contrib.auth.hashers import make_password
 
 
@@ -22,3 +22,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+
+
+class ServerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Server
+        fields = '__all__'
+
+
+class UrlToServerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UrlToServer
+        fields = '__all__'

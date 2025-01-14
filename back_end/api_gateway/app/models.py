@@ -17,3 +17,13 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['email']
     USERNAME_FIELD = 'username'
 
+
+class UrlToServer(models.Model):
+    url_address = models.CharField(max_length=200)
+    port = models.IntegerField()
+    active = models.IntegerField()
+
+class Server(models.Model):
+    server = models.ForeignKey(UrlToServer, on_delete=models.CASCADE)
+    service_name = models.CharField(max_length=100, unique=True)
+
