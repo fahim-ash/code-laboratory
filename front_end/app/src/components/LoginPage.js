@@ -67,11 +67,11 @@ const LoginPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button variant="contained" color="primary" fullWidth onClick={()=>handleLogin('register')}>
-                    Create User
-                </Button>
-                <Button variant="contained" color="primary" sx={{ mt: 5 }} fullWidth onClick={()=>handleLogin('login')}>
+                <Button variant="contained" color="primary"  fullWidth onClick={()=>handleLogin('login')}>
                     Login
+                </Button>
+                <Button variant="contained" color="primary" sx={{ mt: 5 }} fullWidth onClick={()=>handleLogin('register')}>
+                    Create User
                 </Button>
             </Box>
         </Container>

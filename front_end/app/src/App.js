@@ -5,7 +5,7 @@ import FileUploadPage from "./components/FileUpload";
 import FileListPage from "./components/FlieListPage";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
-import UrlToServerMapper from "./components/UrlToServerMapper";
+// import UrlToServerMapper from "./components/UrlToServerMapper";
 import UserList from "./components/UserPage";
 
 function App() {
