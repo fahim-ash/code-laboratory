@@ -34,3 +34,9 @@ class UrlToServerSerializer(serializers.ModelSerializer):
     class Meta:
         model = UrlToServer
         fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'date_joined']

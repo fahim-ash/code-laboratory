@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer, ServerSerializer, UrlToServerSerializer
-from .models import Server, UrlToServer
+from .serializers import (RegisterSerializer, LoginSerializer, 
+                          ServerSerializer, UrlToServerSerializer,
+                          UserSerializer)
+from .models import Server, UrlToServer, CustomUser
 
 
 class Greeting(APIView):
@@ -68,3 +70,11 @@ class UrlToServerApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class UserView(APIView):
+    def get(self, request):
+        urls = CustomUser.objects.all()
+        serializer = UserSerializer(urls, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

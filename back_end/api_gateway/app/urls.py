@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Greeting, RegisterView, LoginView, UrlToServerApiView, ServerView
+from .views import Greeting, RegisterView, LoginView, UrlToServerApiView, ServerView, UserView
 
 urlpatterns = [
     path('greet/', Greeting.as_view()),
@@ -7,4 +7,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('url-to-server/', UrlToServerApiView.as_view(), name='url-to-server-api'),
     path('server/', ServerView.as_view(), name='server-api'),
+    path('users/', UserView.as_view(), name='user-api'),
 ]
