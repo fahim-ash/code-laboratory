@@ -8,18 +8,15 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (action) => {
         try {
-            // Replace with your backend login endpoint
+            let data = {username, password};
+            let url = `http://localhost:8000/api/${action}/`;
+
             const response = await axios.post(
-                "http://localhost:8000/api/login/",
-                {
-                    username,
-                    password,
-                },
-                {
-                    withCredentials: true,
-                }
+                url, 
+                data,
+                {withCredentials: true}
             );
 
             // Check if the login is successful
@@ -70,12 +67,10 @@ const LoginPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={handleLogin}
-                >
+                <Button variant="contained" color="primary" fullWidth onClick={()=>handleLogin('register')}>
+                    Create User
+                </Button>
+                <Button variant="contained" color="primary" sx={{ mt: 5 }} fullWidth onClick={()=>handleLogin('login')}>
                     Login
                 </Button>
             </Box>
