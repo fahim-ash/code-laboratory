@@ -16,6 +16,9 @@ const LoginPage = () => {
                 {
                     username,
                     password,
+                },
+                {
+                    withCredentials: true,
                 }
             );
 

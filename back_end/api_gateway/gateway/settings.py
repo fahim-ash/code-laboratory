@@ -158,3 +158,4 @@ AUTH_USER_MODEL = 'app.CustomUser'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React frontend URL
 ]
+CORS_ALLOW_CREDENTIALS = True

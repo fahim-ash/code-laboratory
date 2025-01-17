@@ -13,7 +13,15 @@ class JWTMiddleware(MiddlewareMixin):
                 user = auth.get_user(validated_token)
 
                 print("Authenticated User:", user)
-                response.set_cookie('jwt', access_token, httponly=True, secure=True)
+                response.set_cookie(
+                    key='jwt',
+                    value=access_token,
+                    httponly=True,
+                    secure=True,
+                    samesite='None',
+                    path='/',
+                )
+
             except (InvalidToken, AuthenticationFailed) as e:
                 print("Authentication Error:", e)
 
