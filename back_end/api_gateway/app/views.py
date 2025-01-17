@@ -33,11 +33,14 @@ class LoginView(APIView):
                 refresh = RefreshToken.for_user(user)
                 print("------Hello World-----------")
                 return Response({
+                    "success": True,
                     "refresh": str(refresh),
                     "access": str(refresh.access_token),
                 }, status=status.HTTP_200_OK)
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"success": False, "message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response({"success": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class ServerView(APIView):

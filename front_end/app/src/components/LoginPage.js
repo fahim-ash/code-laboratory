@@ -12,7 +12,7 @@ const LoginPage = () => {
         try {
             // Replace with your backend login endpoint
             const response = await axios.post(
-                "http://localhost:5000/api/login",
+                "http://localhost:8000/api/login/",
                 {
                     username,
                     password,
@@ -29,7 +29,18 @@ const LoginPage = () => {
         } catch (error) {
             // Handle errors (e.g., network issues, invalid credentials, etc.)
             console.error("Login error:", error);
-            alert("An error occurred while logging in. Please try again.");
+            if (error.response) {
+                const {status, data} = error.response;
+                if (status === 401) {
+                    alert("Login failed: " + data.message);
+                } else if (status === 400) {
+                    alert("Validation error: " + JSON.stringify(data.message));
+                } else {
+                    alert("Error: " + data.message || "Something went wrong!");
+                }
+            } else {
+                alert("An error occurred while logging in. Please try again.");
+            }
         }
     };
 
