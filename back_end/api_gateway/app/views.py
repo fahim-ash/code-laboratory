@@ -81,25 +81,13 @@ class UserView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ValidateTokenView(APIView):
-    permission_classes = [AllowAny]
-
+class CheckValidUser(APIView):
     def post(self, request):
-        token = request.COOKIES.get('jwt')
-        if not token:
-            return Response({"success": False, "message": "Token not provided."}, status=401)
+        print("request user---:", request.user)
+        if not request.user or not request.user.is_authenticated:
+            return Response({"success": False, "message": "Unauthorized"}, status=401)
 
-        try:
-            auth = JWTAuthentication()
-            validated_token = auth.get_validated_token(token)
-            user = auth.get_user(validated_token)
-            return Response(
-                {"success": True, "message": "Token is valid.", "user": {"id": user.id, "username": user.username}})
-        except AuthenticationFailed as e:
-            return Response({"success": False, "message": str(e)}, status=401)
-
-        except Exception as e:
-            return Response({"success": False, "message": "An error occurred during validation."}, status=500)
+        return Response({"success": True, "user": {"id": request.user.id, "username": request.user.username}})
 
 
 class LogoutView(APIView):
