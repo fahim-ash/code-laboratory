@@ -5,7 +5,10 @@ from rest_framework_simplejwt.exceptions import InvalidToken, AuthenticationFail
 
 class JWTMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        access_token = response.data.get('access') if hasattr(response, 'data') else None
+        access_token = None
+        if hasattr(response, 'data') and isinstance(response.data, dict):
+            access_token = response.data.get('access')
+
         if access_token:
             try:
                 auth = JWTAuthentication()

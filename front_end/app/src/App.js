@@ -5,8 +5,10 @@ import FileUploadPage from "./components/FileUpload";
 import FileListPage from "./components/FlieListPage";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
-import UrlToServerMapper from "./components/UrlToServerMapper";
+// import UrlToServerMapper from "./components/UrlToServerMapper";
 import UserList from "./components/UserPage";
+import TokenValidate from "./components/TokenValidate";
+import Logout from "./components/Logout";
 
 function App() {
     return (
@@ -14,11 +16,39 @@ function App() {
             <Navbar />
             <Routes>
                 <Route path="/" element={<LoginPage />} />
-                <Route path="/upload" element={<FileUploadPage />} />
-                <Route path="/files" element={<FileListPage />} />
-                <Route path="/home" element={<HomePage />} />
-                {/* <Route path="/urls" element={<UrlToServerMapper />} /> */}
-                <Route path="/users" element={<UserList />} />
+                <Route
+                    path="/home"
+                    element={
+                        <TokenValidate>
+                            <HomePage />
+                        </TokenValidate>
+                    }
+                />
+                <Route
+                    path="/upload"
+                    element={
+                        <TokenValidate>
+                            <FileUploadPage />
+                        </TokenValidate>
+                    }
+                />
+                <Route
+                    path="/files"
+                    element={
+                        <TokenValidate>
+                            <FileListPage />
+                        </TokenValidate>
+                    }
+                />
+                <Route
+                    path="/users"
+                    element={
+                        <TokenValidate>
+                            <UserList />
+                        </TokenValidate>
+                    }
+                />
+                <Route path="/logout" element={<Logout/>}/>
             </Routes>
         </Router>
     );
