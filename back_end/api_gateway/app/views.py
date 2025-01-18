@@ -1,12 +1,15 @@
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import (RegisterSerializer, LoginSerializer, 
+from .serializers import (RegisterSerializer, LoginSerializer,
                           ServerSerializer, UrlToServerSerializer,
                           UserSerializer)
 from .models import Server, UrlToServer, CustomUser
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class Greeting(APIView):
@@ -43,13 +46,12 @@ class LoginView(APIView):
         return Response({"success": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class ServerView(APIView):
     def get(self, request):
         servers = Server.objects.all()
         serializer = ServerSerializer(servers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def post(self, request):
         serializer = ServerSerializer(data=request.data)
         if serializer.is_valid():
@@ -63,14 +65,13 @@ class UrlToServerApiView(APIView):
         urls = UrlToServer.objects.all()
         serializer = UrlToServerSerializer(urls, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def post(self, request):
         serializer = UrlToServerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 class UserView(APIView):
@@ -78,3 +79,31 @@ class UserView(APIView):
         urls = CustomUser.objects.all()
         serializer = UserSerializer(urls, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ValidateTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            return Response({"success": False, "message": "Token not provided."}, status=401)
+
+        try:
+            auth = JWTAuthentication()
+            validated_token = auth.get_validated_token(token)
+            user = auth.get_user(validated_token)
+            return Response(
+                {"success": True, "message": "Token is valid.", "user": {"id": user.id, "username": user.username}})
+        except AuthenticationFailed as e:
+            return Response({"success": False, "message": str(e)}, status=401)
+
+        except Exception as e:
+            return Response({"success": False, "message": "An error occurred during validation."}, status=500)
+
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"success": True, "message": "Logged out successfully."})
+        response.delete_cookie('jwt')
+        return response
