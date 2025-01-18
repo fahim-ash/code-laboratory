@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
 import axios from "axios";
+import Context from "./globalContext";
+
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const {globalcontext, setGlobalContext} = useContext(Context);
     const navigate = useNavigate();
 
     const handleLogin = async (action) => {
@@ -20,8 +23,9 @@ const LoginPage = () => {
             );
 
             // Check if the login is successful
-            if (response.status === 200 && response.data.success) {
-                alert("Login successful!");
+            if (response.status === 200) {
+                setGlobalContext(response.data.user);
+                console.log(globalcontext);
                 navigate("/home"); // Redirect to Home Page
             } else {
                 alert("Login failed: " + response.data.message);

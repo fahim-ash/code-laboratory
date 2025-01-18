@@ -1,9 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const TokenValidate = ({children}) => {
     const navigate = useNavigate();
+    let [flag, setFlag] = useState(false);
+    
 
     useEffect(() => {
         const validateToken = async () => {
@@ -13,12 +15,17 @@ const TokenValidate = ({children}) => {
                     {},
                     {withCredentials: true}
                 );
-                console.log("response---:", response)
                 if (!response.data.success) {
+                    setFlag(false)
                     navigate("/");
+                    
+                }else{
+                    setFlag(true);
+
                 }
+
             } catch (error) {
-                console.error("Token validation failed:", error);
+                setFlag(false)
                 navigate("/");
             }
         };
@@ -26,7 +33,9 @@ const TokenValidate = ({children}) => {
         validateToken();
     }, [navigate]);
 
-    return <>{children}</>;
+    if (flag){
+        return <>{children}</>
+    };
 };
 
 export default TokenValidate;

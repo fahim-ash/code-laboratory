@@ -23,7 +23,7 @@ const UserList = () => {
   const fetchdata = async () => {
     try {
         let url = `http://localhost:8000/api/users/`;
-        const response = await axios.get(url);
+        const response = await axios.get(url, {withCredentials: true});
         if (response.status === 200) {
             setData(response.data);
         } else {
