@@ -9,7 +9,7 @@ const TokenValidate = ({children}) => {
         const validateToken = async () => {
             try {
                 const response = await axios.post(
-                    'http://localhost:8000/api/validate_token/',
+                    'http://localhost:8000/api/valid_user/',
                     {},
                     {withCredentials: true}
                 );
