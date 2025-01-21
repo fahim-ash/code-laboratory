@@ -143,11 +143,11 @@ const MyTable = ({ data, columns }) => {
             ))}
           </select>
         </div>
-        <div>
-          Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}
-          {table.getRowCount().toLocaleString()} Rows
-        </div>
-        <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
+        {/*<div>*/}
+        {/*  Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}*/}
+        {/*  {table.getRowCount().toLocaleString()} Rows*/}
+        {/*</div>*/}
+        {/*<pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>*/}
       </div>
     );
   };

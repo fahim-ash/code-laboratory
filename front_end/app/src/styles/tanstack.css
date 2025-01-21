@@ -1,31 +1,125 @@
-html {
-    font-family: sans-serif;
-    font-size: 14px;
+/* General Styles */
+html, body {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Centering the table container */
+.p-2 {
+  width: 95%;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  font-weight: bold;
+  text-transform: capitalize;
+  background-color: #f1f1f1;
+}
+
+td {
+  color: #333;
+}
+
+/* Remove header background color */
+thead {
+  background-color: transparent;
+  color: inherit;
+}
+
+/* Pagination and Buttons */
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Input Fields */
+input[type="number"], select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+
+}
+
+/* Refresh Button */
+button.refresh {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+button.refresh:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .p-2 {
+    width: 100%;
   }
-  
-  table {
-    border: 1px solid lightgray;
+}
+
+@media (max-width: 768px) {
+  .p-2 {
+    padding: 10px;
   }
-  
-  tbody {
-    border-bottom: 1px solid lightgray;
+
+  table, th, td {
+    display: block;
+    width: 100%;
   }
-  
-  th {
-    border-bottom: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    padding: 2px 4px;
+
+  th, td {
+    box-sizing: border-box;
+    text-align: left;
   }
-  
-  tfoot {
-    color: gray;
+
+  .flex {
+    flex-direction: column;
   }
-  
-  tfoot th {
-    font-weight: normal;
-  }
-  
-  button:disabled {
-    opacity: 0.5;
-  }
-  
+}
