@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: '22.13.1'
       - name: Install Dependencies and Build Frontend
-        working-directory: frontend
+        working-directory: ./frontend
         run: |
           npm install
           npm run build
@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: '3.12.3'
       - name: Install Backend Dependencies
-        working-directory: back_end/api_gateway
+        working-directory: ./back_end/api_gateway
         run: |
           python -m venv venv
           source venv/bin/activate
@@ -52,7 +52,7 @@ jobs:
         with:
           python-version: '3.12.3'
       - name: Install Backend Dependencies
-        working-directory: back_end/python_service
+        working-directory: ./back_end/python_service
         run: |
           python -m venv venv
           source venv/bin/activate
