@@ -66,5 +66,6 @@ jobs:
       # Nginx Validation (Optional)
       - name: Install Nginx
         run: sudo apt-get install -y nginx
+        
       - name: Validate Nginx Configuration
-        run: nginx -t
+        run: sudo nginx -t
