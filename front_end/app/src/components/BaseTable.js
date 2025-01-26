@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 
 
 import {
-    Column,
-    PaginationState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
