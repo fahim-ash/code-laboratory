@@ -14,17 +14,31 @@ services:
       - DJANGO_SETTINGS_MODULE=gateway.settings
     command: gunicorn --bind 0.0.0.0:8000 gateway.wsgi:application
 
+  python_service:
+    build: ./back_end/python_service
+    container_name: python_service
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./back_end/python_service:/app
+    depends_on:
+      - consul
+    environment:
+      - DJANGO_SETTINGS_MODULE=py_service.settings
+    command: gunicorn --bind 0.0.0.0:8001 py_service.wsgi:application
+
   nginx:
-    image: nginx:latest
+    build: ./nginx
     container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
     depends_on:
       - api_gateway
-      - consul
       - frontend
+      - consul
+
 
   consul:
     image: hashicorp/consul:1.15.2
@@ -34,6 +48,7 @@ services:
       - "8600:8600/udp"
     volumes:
       - ./consul/api_gateway.json:/consul/config/api_gateway.json
+      - ./consul/python_service.json:/consul/config/python_service.json
 
   frontend:
     build: ./front_end/app
