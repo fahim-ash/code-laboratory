@@ -42,7 +42,7 @@ jobs:
       
       # Install Backend Dependencies for API Gateway
       - name: Install Backend Dependencies for API Gateway
-        working-directory: back_end/api_gateway
+        working-directory: back_end/auth_service
         run: |
           python -m venv venv
           . venv/bin/activate

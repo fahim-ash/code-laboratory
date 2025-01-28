@@ -22,7 +22,7 @@ const UserList = () => {
   
   const fetchdata = async () => {
     try {
-        let url = `/api/users/`;  // Change the base URL to relative
+        let url = `/auth/api/users/`;  // Change the base URL to relative
         const response = await axios.get(url, { withCredentials: true });
         if (response.status === 200) {
             setData(response.data);

@@ -1,13 +1,13 @@
 version: '3.3'
 
 services:
-  api_gateway:
-    build: ./back_end/api_gateway
-    container_name: api_gateway
+  auth_service:
+    build: ./back_end/auth_service
+    container_name: auth_service
     ports:
       - "8000:8000"
     volumes:
-      - ./back_end/api_gateway:/app
+      - ./back_end/auth_service:/app
     depends_on:
       - consul
     environment:
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
     depends_on:
-      - api_gateway
+      - auth_service
       - frontend
       - consul
 
@@ -47,7 +47,7 @@ services:
       - "8500:8500"
       - "8600:8600/udp"
     volumes:
-      - ./consul/api_gateway.json:/consul/config/api_gateway.json
+      - ./consul/auth_service.json:/consul/config/auth_service.json
       - ./consul/python_service.json:/consul/config/python_service.json
 
   frontend:

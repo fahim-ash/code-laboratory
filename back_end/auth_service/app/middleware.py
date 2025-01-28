@@ -19,7 +19,7 @@ class JWTMiddleware(MiddlewareMixin):
         request.user = AnonymousUser()
         resolver_match = resolve(request.path)
         view_name = resolver_match.view_name
-        excluded_views = ["login"]
+        excluded_views = ["login", "register"]
         if view_name in excluded_views:
             return None
 

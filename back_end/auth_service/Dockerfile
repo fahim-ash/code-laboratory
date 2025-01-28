@@ -1,5 +1,8 @@
 # Base image
-FROM python:3.10.10
+FROM python:3.12.3
+
+# Install distutils and other dependencies
+RUN apt-get update && apt-get install -y python3-distutils
 
 # Set working directory
 WORKDIR /app
