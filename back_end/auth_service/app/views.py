@@ -6,9 +6,8 @@ from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import (RegisterSerializer, LoginSerializer,
-                          ServerSerializer, UrlToServerSerializer,
                           UserSerializer)
-from .models import Server, UrlToServer, CustomUser
+from .models import CustomUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 

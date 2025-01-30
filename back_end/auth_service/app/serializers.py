@@ -24,18 +24,6 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
 
-class ServerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Server
-        fields = '__all__'
-
-
-class UrlToServerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UrlToServer
-        fields = '__all__'
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

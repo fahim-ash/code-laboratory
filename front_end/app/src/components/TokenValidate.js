@@ -35,6 +35,8 @@ const TokenValidate = ({children}) => {
 
     if (flag){
         return <>{children}</>
+    }else{
+        return null;
     };
 };
 

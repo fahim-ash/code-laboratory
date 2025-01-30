@@ -9,9 +9,6 @@ const Navbar = () => {
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     File Manager
                 </Typography>
-                <Button color="inherit" component={Link} to="/">
-                    Login
-                </Button>
                 <Button color="inherit" component={Link} to="/upload">
                     Upload
                 </Button>

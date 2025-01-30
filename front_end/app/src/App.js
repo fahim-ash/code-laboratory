@@ -5,7 +5,6 @@ import FileUploadPage from "./components/FileUpload";
 import FileListPage from "./components/FlieListPage";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
-// import UrlToServerMapper from "./components/UrlToServerMapper";
 import UserList from "./components/UserPage";
 import TokenValidate from "./components/TokenValidate";
 import Logout from "./components/Logout";
@@ -15,7 +14,9 @@ function App() {
     return (
         <GlobalContext>
             <Router>
-                <Navbar />
+                <TokenValidate> 
+                    <Navbar /> 
+                </TokenValidate>
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
                     <Route
