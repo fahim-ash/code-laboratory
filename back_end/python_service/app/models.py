@@ -5,7 +5,7 @@ class File(models.Model):
     file_name = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     file_size = models.BigIntegerField()
-    file_path = models.FileField(upload_to='uploads/')
+    file_path = models.CharField(max_length=500)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):

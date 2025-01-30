@@ -7,15 +7,19 @@ class FileService:
     storage = FileSystemStorage()
 
     @staticmethod
-    def save_file(uploaded_file, description):
-        file_path = FileService.storage.save(uploaded_file.name, uploaded_file)
-        file_size = uploaded_file.size
+    def save_chunked_file(file_chunk, file_name):
+        file_path = os.path.join("media/", file_name)
+
+        with open(file_path, "ab") as f:  # Append mode to store chunks
+            f.write(file_chunk.read())
+
+    @staticmethod
+    def finalize_file(file_name, file_size, description):
+        file_path = os.path.join("media/", file_name)
         new_file = File.objects.create(
-            file_name=uploaded_file.name,
+            file_name=file_name,
             file_path=file_path,
             file_size=file_size,
             description=description
         )
         return new_file
-
-

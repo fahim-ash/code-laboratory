@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Container, Typography, Button, Box, LinearProgress } from "@mui/material";
 
 const FileUploadPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [progress, setProgress] = useState(0);
     const [uploadStatus, setUploadStatus] = useState("");
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-        setUploadStatus(""); // Reset status on new file selection
+        setProgress(0); // Reset progress
+        setUploadStatus("");
     };
 
     const handleUpload = async () => {
@@ -17,35 +19,49 @@ const FileUploadPage = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append("description", "Sample file upload");
+        let chunkSize = 1024 * 1024 * 2; // 2MB chunks
+        let totalSize = selectedFile.size;
+        let totalChunks = Math.ceil(totalSize / chunkSize);
+        let uploadedChunks = 0;
 
-        try {
-            const response = await axios.post("/file/api/upload/", formData, {
+        for (let chunkNumber = 0; chunkNumber < totalChunks; chunkNumber++) {
+            let start = chunkNumber * chunkSize;
+            let end = Math.min(start + chunkSize, totalSize);
+            let chunk = selectedFile.slice(start, end);
+
+            let formData = new FormData();
+            formData.append("file", chunk);
+            formData.append("file_name", selectedFile.name);
+            formData.append("chunk_number", chunkNumber);
+            formData.append("total_chunks", totalChunks);
+            formData.append("description", "Chunked file upload");
+
+            try {
+                await axios.post("/file/api/upload/", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 },
-                {withCredentials: true}
-            );
+                    {withCredentials: true}
+                    );
 
-            if (response.status === 201) {
-                setUploadStatus(`File uploaded successfully! File ID: ${response.data.file_id}`);
-            } else {
-                setUploadStatus("File upload failed. Please try again.");
+                uploadedChunks += 1;
+                setProgress(Math.round((uploadedChunks / totalChunks) * 100));
+            } catch (error) {
+                console.error("Chunk upload error:", error);
+                setUploadStatus("Error uploading file. Please try again.");
+                return;
             }
-        } catch (error) {
-            console.error("Error uploading file:", error);
-            setUploadStatus("An error occurred while uploading the file.");
         }
+
+        setUploadStatus("File uploaded successfully!");
     };
 
     return (
         <Container maxWidth="sm">
             <Box sx={{ mt: 10 }}>
                 <Typography variant="h4" gutterBottom>
-                    Upload File
+                    Upload Large File
                 </Typography>
                 <input type="file" onChange={handleFileChange} />
                 <Button
@@ -57,6 +73,10 @@ const FileUploadPage = () => {
                 >
                     Upload
                 </Button>
+                <LinearProgress variant="determinate" value={progress} sx={{ mt: 2 }} />
+                <Typography variant="body1" sx={{ mt: 2, color: progress === 100 ? "green" : "black" }}>
+                    {progress}% uploaded
+                </Typography>
                 {uploadStatus && (
                     <Typography variant="body1" sx={{ mt: 2, color: "green" }}>
                         {uploadStatus}
