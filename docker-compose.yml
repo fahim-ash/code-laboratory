@@ -68,3 +68,28 @@ services:
     container_name: sqlite
     volumes:
       - ./back_end/db.sqlite3:/data/db.sqlite3
+
+
+  redis:
+    image: redis:latest
+    ports:
+       - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+
+  celery:
+    build: ./back_end/python_service
+    command: celery -A py_service worker --loglevel=info
+    volumes:
+      - ./back_end/python_service:/app
+    depends_on:
+      - redis
+      - python_service
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=py_service.settings
+
+
+volumes:
+  redis_data:

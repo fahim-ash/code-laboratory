@@ -142,3 +142,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React frontend URL
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+
+# redis settings
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
