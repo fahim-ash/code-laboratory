@@ -1,6 +1,6 @@
 {
   "service": {
-    "name": "python_service",
+    "name": "file_service",
     "tags": ["api"],
     "port": 8001,
     "address": "127.0.0.1"
