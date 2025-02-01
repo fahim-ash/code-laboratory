@@ -1,32 +1,70 @@
-import React from "react";
-import {
-    Container,
-    Typography,
-    List,
-    ListItem,
-    ListItemText,
-    Box,
-} from "@mui/material";
+import React, {useState} from 'react';
+import '../styles/tanstack.css';
+import axios from 'axios';
+import MyTable from './BaseTable';
 
-const FileListPage = () => {
-    const files = ["file1.txt", "file2.jpg", "file3.pdf"]; // Example files
+const UserList = () => {
+    const columns = React.useMemo(() => [
+        {
+            accessorKey: 'file_name',
+            header: () => 'File Name',
+            footer: props => props.column.id,
+        },
+        {
+            accessorKey: 'file_size',
+            header: () => 'Size',
+            footer: props => props.column.id,
+        },
+        {
+            accessorKey: 'uploaded_at',
+            header: () => 'Uploaded At',
+            footer: props => props.column.id,
+        },
+        {
+            accessorKey: 'description',
+            header: () => 'Description',
+            footer: props => props.column.id,
+        },
+        {
+            id: 'download',
+            header: 'Download',
+            cell: ({row}) => {
+                const file = row.original;
+                const handleDownload = () => {
+                    const to_url = `/file/api/download/${file.file_name}`;
+                    window.location.href = to_url;
+                };
+                return <button onClick={handleDownload}>Download</button>;
+            },
+            footer: props => props.column.id,
+        }
+    ], []);
+
+
+    const [data, setData] = useState([]);
+
+    const fetchdata = async () => {
+        try {
+            let url = `/file/api/files/`;
+            const response = await axios.get(url, {withCredentials: true});
+            if (response.status === 200) {
+                setData(response.data);
+            } else {
+                console.log('error fetching data')
+            }
+        } catch (error) {
+        }
+    }
 
     return (
-        <Container maxWidth="sm">
-            <Box sx={{ mt: 10 }}>
-                <Typography variant="h4" gutterBottom>
-                    File List
-                </Typography>
-                <List>
-                    {files.map((file, index) => (
-                        <ListItem key={index}>
-                            <ListItemText primary={file} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
-        </Container>
+        <>
+            <MyTable data={data} columns={columns}/>
+            <hr/>
+            <div>
+                <button onClick={() => fetchdata()}>Refresh Data</button>
+            </div>
+        </>
     );
 };
 
-export default FileListPage;
+export default UserList;
