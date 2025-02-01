@@ -1,0 +1,8 @@
+{
+  "service": {
+    "name": "chat_service",
+    "tags": ["api"],
+    "port": 8002,
+    "address": "127.0.0.1"
+  }
+}

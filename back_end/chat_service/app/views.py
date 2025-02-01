@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Chat
 from .serializers import ChatSerializer
 
+
 class ChatListCreateView(APIView):
     def get(self, request):
         """Retrieve all chats."""
@@ -18,6 +19,7 @@ class ChatListCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ChatDetailView(APIView):
     def get(self, request, chat_id):

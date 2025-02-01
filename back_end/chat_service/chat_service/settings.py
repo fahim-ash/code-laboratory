@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
     'app'
 ]
 
@@ -72,22 +72,30 @@ TEMPLATES = [
 WSGI_APPLICATION = 'chat_service.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'your_db_name',
-        'CLIENT': {
-            'host': 'mongodb://localhost:27017/',  # Change if using remote DB
-        }
-    }
-}
-
+import os
 from mongoengine import connect
 
-connect('your_db_name', host='mongodb://localhost:27017/')
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongodb:27017/chat_app")
+connect('chat_app', host=MONGO_URI)
+
+#
+# # Database
+# # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'chat_app',
+#         'CLIENT': {
+#             'host': os.getenv("MONGO_URI", "mongodb://mongodb:27017/chat_app"),
+#         }
+#     }
+# }
+#
+# from mongoengine import connect
+#
+# connect('chat_app', host=os.getenv("MONGO_URI", "mongodb://mongodb:27017/chat_app"))
+#
 
 
 # Password validation
@@ -119,6 +127,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
+}
 
 
 # Static files (CSS, JavaScript, Images)

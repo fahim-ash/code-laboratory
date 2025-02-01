@@ -27,6 +27,20 @@ services:
       - DJANGO_SETTINGS_MODULE=py_service.settings
     command: gunicorn --bind 0.0.0.0:8001 py_service.wsgi:application
 
+
+  chat_service:
+    build:
+      context: ./back_end/chat_service
+    container_name: chat_service
+    depends_on:
+      - mongodb
+      - consul
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./back_end/chat_service:/app
+    command: gunicorn --bind 0.0.0.0:8002 chat_service.wsgi:application
+
   nginx:
     build: ./nginx
     container_name: nginx
@@ -38,6 +52,7 @@ services:
       - auth_service
       - frontend
       - consul
+      - chat_service
 
 
   consul:
@@ -49,6 +64,7 @@ services:
     volumes:
       - ./consul/auth_service.json:/consul/config/auth_service.json
       - ./consul/file_service.json:/consul/config/file_service.json
+      - ./consul/chat_service.json:/consul/config/chat_service.json
 
   frontend:
     build: ./front_end/app
@@ -91,5 +107,22 @@ services:
       - DJANGO_SETTINGS_MODULE=py_service.settings
 
 
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - backend_network
+
+
 volumes:
   redis_data:
+  mongodb_data:
+
+networks:
+  backend_network:
+    driver: bridge
