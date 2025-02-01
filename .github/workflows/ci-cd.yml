@@ -50,7 +50,7 @@ jobs:
 
       # Install Backend Dependencies for Python Service
       - name: Install Backend Dependencies for Python Service
-        working-directory: back_end/python_service
+        working-directory: back_end/file_service
         run: |
           python -m venv venv
           . venv/bin/activate
@@ -58,7 +58,7 @@ jobs:
 
       # Run Django Tests (Uncomment when tests are written)
       # - name: Run Django Tests
-      #   working-directory: ./back_end/python_service
+      #   working-directory: ./back_end/file_service
       #   run: |
       #     . venv/bin/activate
       #     python manage.py test
