@@ -11,43 +11,45 @@ def get_room_id(sender, receiver):
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print("CONNECTED TO WEBSOCKET")
-
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        print("DISCONNECTED FROM WEBSOCKET")
-
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-
-        sender = data.get('sender')
-        receiver = data.get('receiver')
-        message = data.get('message')
-
-        if not sender or not receiver:
-            print("ERROR: Sender or Receiver missing in message payload")
-            return
-
-        self.room_name = get_room_id(sender, receiver)
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f"chat_{self.room_name}"
 
+        # Group add (for real-time updates)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
 
-        Message(
+        await self.accept()
+        print(f"✅ Connected to Room: {self.room_group_name}")
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+        print(f"Disconnected from Room: {self.room_group_name}")
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        sender = data.get('sender')
+        receiver = data.get('receiver')
+        message = data.get('message')
+
+        if not sender or not receiver or not message:
+            print("ERROR: Invalid message format!")
+            return
+
+        self.room_name = get_room_id(sender, receiver)
+        self.room_group_name = f"chat_{self.room_name}"
+
+        msg = Message(
             room=self.room_name,
             sender=sender,
             message=message,
             timestamp=datetime.utcnow()
-        ).save()
+        )
+        msg.save()
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -59,6 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def chat_message(self, event):
         await self.send(text_data=json.dumps({
+            'room': self.room_name,
             'sender': event['sender'],
             'message': event['message'],
         }))
