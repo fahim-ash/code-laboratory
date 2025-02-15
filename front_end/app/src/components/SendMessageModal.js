@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Context from "./globalContext";
+import React, { useState, useEffect } from 'react';
 const SendMessageModal = ({ isOpen, onClose, receiver }) => {
     const [message, setMessage] = useState('');
     const [socket, setSocket] = useState(null);
-    const {globalcontext, setGlobalContext} = useContext(Context);
 
 
 
@@ -36,7 +34,6 @@ const SendMessageModal = ({ isOpen, onClose, receiver }) => {
                 receiver: receiver.id,
                 message: message
             };
-            console.log("message of all--:", globalcontext)
             socket.send(JSON.stringify(messageData));
             setMessage('');
             // onClose();
