@@ -26,6 +26,7 @@ const LoginPage = () => {
             if (response.status === 200) {
                 setGlobalContext(response.data.user);
                 console.log(globalcontext);
+                localStorage.setItem("user", JSON.stringify(response.data.user));
                 navigate("/home"); // Redirect to Home Page
             } else {
                 alert("Login failed: " + response.data.message);

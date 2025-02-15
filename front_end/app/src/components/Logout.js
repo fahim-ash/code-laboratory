@@ -9,6 +9,7 @@ const Logout = () => {
         const handleLogout = async () => {
             try {
                 await axios.post("/auth/api/logout/", {}, { withCredentials: true });
+                localStorage.removeItem("user");
                 navigate("/");
             } catch (error) {
                 console.error("Logout failed:", error);
