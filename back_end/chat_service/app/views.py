@@ -1,41 +1,46 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Chat
-from .serializers import ChatSerializer
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+from .models import Message
 
 
-class ChatListCreateView(APIView):
-    def get(self, request):
-        """Retrieve all chats."""
-        chats = Chat.objects.all()
-        serializer = ChatSerializer(chats, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        """Create a new chat."""
-        serializer = ChatSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def get_room_id(sender, receiver):
+    sorted_ids = sorted([str(sender), str(receiver)])
+    return f"{sorted_ids[0]}_{sorted_ids[1]}"
 
 
-class ChatDetailView(APIView):
-    def get(self, request, chat_id):
-        """Retrieve a single chat by ID."""
+@csrf_exempt
+def message_view(request):
+    if request.method == "POST":
+
         try:
-            chat = Chat.objects.get(id=chat_id)
-            serializer = ChatSerializer(chat)
-            return Response(serializer.data)
-        except Chat.DoesNotExist:
-            return Response({"error": "Chat not found"}, status=status.HTTP_404_NOT_FOUND)
+            if not request.body:
+                return JsonResponse({"status": "error", "message": "Empty request body"}, status=400)
 
-    def delete(self, request, chat_id):
-        """Delete a chat by ID."""
-        try:
-            chat = Chat.objects.get(id=chat_id)
-            chat.delete()
-            return Response({"message": "Chat deleted"}, status=status.HTTP_204_NO_CONTENT)
-        except Chat.DoesNotExist:
-            return Response({"error": "Chat not found"}, status=status.HTTP_404_NOT_FOUND)
+            data = json.loads(request.body.decode('utf-8'))  # Decode for safety
+            print("[DEBUG] Parsed JSON data:", data)
+
+            sender = data.get('sender')
+            receiver = data.get('receiver')
+            content = data.get('content')
+
+            if not sender or not receiver or not content:
+                return JsonResponse({"status": "error", "message": "Missing required fields"}, status=400)
+
+            room = get_room_id(sender, receiver)
+            Message(
+                room=room,
+                sender=sender,
+                message=content,
+                timestamp=datetime.utcnow()
+            ).save()
+
+            return JsonResponse({"status": "success"}, status=200)
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({"status": "error", "message": f"JSON Decode Error: {str(e)}"}, status=400)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+    return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)

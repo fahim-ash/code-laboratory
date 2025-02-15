@@ -1,14 +1,22 @@
-from mongoengine import Document, EmbeddedDocument, StringField, DateTimeField, ListField, EmbeddedDocumentField
-import datetime
+from mongoengine import Document, StringField, DateTimeField, ListField, EmbeddedDocument, EmbeddedDocumentField, \
+    BooleanField
 
-class Message(EmbeddedDocument):
-    sender = StringField(max_length=255)  # "user" or "bot"
-    content = StringField()
-    timestamp = DateTimeField(default=datetime.datetime.utcnow)
 
-class Chat(Document):
-    user_id = StringField(required=True)  # User's ID or session ID
-    messages = ListField(EmbeddedDocumentField(Message))  # Embedded messages
-    created_at = DateTimeField(default=datetime.datetime.utcnow)
+class Reaction(EmbeddedDocument):
+    user = StringField(required=True)
+    reaction = StringField(required=True)  # E.g., "like", "dislike"
 
-    meta = {'collection': 'chats'}  # Optional: Custom MongoDB collection name
+
+class Message(Document):
+    room = StringField(required=True, index=True)  # Index for room-based queries
+    sender = StringField(required=True)
+    message = StringField(required=True)
+    timestamp = DateTimeField(required=True)
+    # read = BooleanField(default=False) # Optional
+    # delivered = BooleanField(default=False) # Optional
+    # attachments = ListField(StringField()) # Optional
+    # reactions = ListField(EmbeddedDocumentField(Reaction)) # Optional
+    meta = {'collection': 'message'}
+
+    def __str__(self):
+        return f"From: {self.sender} in {self.room}: {self.message} at {self.timestamp}"

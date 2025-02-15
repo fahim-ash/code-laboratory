@@ -27,4 +27,4 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'date_joined']
+        fields = ['id', 'username', 'date_joined']

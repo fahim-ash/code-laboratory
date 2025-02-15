@@ -4,3 +4,5 @@ djangorestframework_simplejwt==5.4.0
 django-cors-headers==4.6.0
 gunicorn==21.2.0
 mongoengine==0.29.1
+channels>=3.0.0
+daphne
