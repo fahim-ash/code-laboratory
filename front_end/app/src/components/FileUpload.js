@@ -37,7 +37,7 @@ const FileUploadPage = () => {
             formData.append("description", "Chunked file upload");
 
             try {
-                await axios.post("/file/api/upload/", formData, {
+                await axios.post(`${process.env.REACT_APP_FILE_SERVICE}/file/api/upload/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },

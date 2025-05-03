@@ -14,41 +14,41 @@ function App() {
     return (
         <GlobalContext>
             <Router>
-                <TokenValidate> 
-                    <Navbar /> 
-                </TokenValidate>
+                {/*<TokenValidate> */}
+                <Navbar/>
+                {/*</TokenValidate>*/}
                 <Routes>
-                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/" element={<LoginPage/>}/>
                     <Route
                         path="/home"
                         element={
-                            <TokenValidate>
-                                <HomePage />
-                            </TokenValidate>
+                            // <TokenValidate>
+                            <HomePage/>
+                            // </TokenValidate>
                         }
                     />
                     <Route
                         path="/upload"
                         element={
-                            <TokenValidate>
-                                <FileUploadPage />
-                            </TokenValidate>
+                            // <TokenValidate>
+                            <FileUploadPage/>
+                            // </TokenValidate>
                         }
                     />
                     <Route
                         path="/files"
                         element={
-                            <TokenValidate>
-                                <FileListPage />
-                            </TokenValidate>
+                            // <TokenValidate>
+                            <FileListPage/>
+                            // </TokenValidate>
                         }
                     />
                     <Route
                         path="/users"
                         element={
-                            <TokenValidate>
-                                <UserList />
-                            </TokenValidate>
+                            // <TokenValidate>
+                                <UserList/>
+                            // </TokenValidate>
                         }
                     />
                     <Route path="/logout" element={<Logout/>}/>

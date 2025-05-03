@@ -15,7 +15,7 @@ const ChatModal = ({ isOpen, onClose, receiver }) => {
           : `${receiver.id}_${globalcontext.id}`;
 
 
-      fetch(`/chat/api/messages/${roomName}`)
+      fetch(`${process.env.REACT_APP_CHAT_SERVICE}/${roomName}`)
         .then(response => response.json())
         .then(data => {
           setMessages(
