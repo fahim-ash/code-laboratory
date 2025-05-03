@@ -31,7 +31,7 @@ const UserList = () => {
             cell: ({row}) => {
                 const file = row.original;
                 const handleDownload = () => {
-                    const to_url = `/file/api/download/${file.file_name}`;
+                    const to_url = `${process.env.REACT_APP_FILE_SERVICE}/file/api/download/${file.file_name}`;
                     window.location.href = to_url;
                 };
                 return <button onClick={handleDownload}>Download</button>;

@@ -10,7 +10,7 @@ const UserList = () => {
 
   const fetchData = async () => {
     try {
-      let url = `${process.env.REACT_APP_AUTH_SERVICE}/api/users`;
+      let url = `${process.env.REACT_APP_AUTH_SERVICE}/auth/api/users`;
       const response = await axios.get(url, { withCredentials: true });
       if (response.status === 200) {
         setData(response.data);

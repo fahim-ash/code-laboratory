@@ -14,7 +14,7 @@ const LoginPage = () => {
     const handleLogin = async (action) => {
         try {
             let data = {username, password};
-            let url = `/auth/api/${action}/`;
+            let url = `${process.env.REACT_APP_AUTH_SERVICE}/auth/api/${action}/`;
 
             const response = await axios.post(
                 url, 
