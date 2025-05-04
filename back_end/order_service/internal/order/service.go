@@ -9,3 +9,11 @@ func ListOrders() ([]model.Order, error) {
 func AddOrder(order *model.Order) error {
 	return CreateOrder(order)
 }
+
+func AddProduct(product *model.Product) error {
+	return CreateProduct(product)
+}
+
+func ListProducts() ([]model.Product, error) {
+	return GetProducts()
+}

@@ -1,6 +1,7 @@
 package order
 
 import (
+	"fmt"
 	"github.com/ashhab/order_service/internal/order/model"
 	"net/http"
 
@@ -27,4 +28,25 @@ func CreateOrderHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, order)
+}
+
+func CreateProductHandler(c *gin.Context) {
+	var product model.Product
+	if err := c.ShouldBindJSON(&product); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	if err := AddProduct(&product); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create product"})
+	}
+	c.JSON(http.StatusCreated, product)
+}
+
+func GetProductHandler(c *gin.Context) {
+	products, err := ListProducts()
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products"})
+		return
+	}
+	c.JSON(http.StatusOK, products)
 }

@@ -26,6 +26,8 @@ func SetupRouter() *gin.Engine {
 	{
 		api.GET("/orders", order.GetOrdersHandler)
 		api.POST("/orders", order.CreateOrderHandler)
+		api.GET("/products", order.GetProductHandler)
+		api.POST("/products", order.CreateProductHandler)
 	}
 
 	return r

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"github.com/ashhab/order_service/internal/order/model"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -18,9 +19,19 @@ func InitDB() {
 		var err error
 		DB, err = gorm.Open(sqlite.Open("order.db"), &gorm.Config{})
 		if err != nil {
+
 			log.Fatal("Database connection failed")
 		}
 
-		DB.AutoMigrate(&model.Order{})
+		err = DB.AutoMigrate(
+			&model.Order{},
+			&model.Product{},
+			&model.OrderDetail{},
+		)
+		if err != nil {
+			log.Fatalf("Issue occurred during migration: %v", err)
+		}
+		fmt.Println("Databases migrated successfully")
+
 	})
 }

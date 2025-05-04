@@ -14,3 +14,13 @@ func GetAllOrders() ([]model.Order, error) {
 func CreateOrder(order *model.Order) error {
 	return db.DB.Create(order).Error
 }
+
+func CreateProduct(product *model.Product) error {
+	return db.DB.Create(product).Error
+}
+
+func GetProducts() ([]model.Product, error) {
+	var products []model.Product
+	result := db.DB.Find(&products)
+	return products, result.Error
+}

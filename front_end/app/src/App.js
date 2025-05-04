@@ -8,6 +8,8 @@ import HomePage from "./components/HomePage";
 import UserList from "./components/UserPage";
 import TokenValidate from "./components/TokenValidate";
 import Logout from "./components/Logout";
+import AddProduct from "./components/AddProduct";
+import AddOrder from "./components/AddOrder";
 import {GlobalContext} from "./components/globalContext";
 
 function App() {
@@ -49,6 +51,18 @@ function App() {
                             // <TokenValidate>
                                 <UserList/>
                             // </TokenValidate>
+                        }
+                    />
+                    <Route
+                        path="/add_product"
+                        element={
+                            <AddProduct/>
+                        }
+                    />
+                    <Route
+                        path="/add_order"
+                        element={
+                            <AddOrder/>
                         }
                     />
                     <Route path="/logout" element={<Logout/>}/>
