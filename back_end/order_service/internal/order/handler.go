@@ -41,8 +41,16 @@ func CreateProductHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, product)
 }
 
+type filters struct {
+	Id string
+}
+
 func GetProductHandler(c *gin.Context) {
-	products, err := ListProducts()
+	id := c.Query("id")
+	queryFilters := filters{
+		Id: id,
+	}
+	products, err := ListProducts(queryFilters)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products"})

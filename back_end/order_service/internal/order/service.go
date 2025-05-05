@@ -1,6 +1,8 @@
 package order
 
-import "github.com/ashhab/order_service/internal/order/model"
+import (
+	"github.com/ashhab/order_service/internal/order/model"
+)
 
 func ListOrders() ([]model.Order, error) {
 	return GetAllOrders()
@@ -14,6 +16,6 @@ func AddProduct(product *model.Product) error {
 	return CreateProduct(product)
 }
 
-func ListProducts() ([]model.Product, error) {
-	return GetProducts()
+func ListProducts(f filters) ([]model.Product, error) {
+	return GetProducts(f)
 }

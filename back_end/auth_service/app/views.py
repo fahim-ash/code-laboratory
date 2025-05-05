@@ -66,5 +66,7 @@ class CheckValidUser(APIView):
 class LogoutView(APIView):
     def post(self, request):
         response = Response({"success": True, "message": "Logged out successfully."})
-        response.delete_cookie('jwt')
+        response.delete_cookie(key='jwt',
+                               samesite='None',
+                               path='/')
         return response

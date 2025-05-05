@@ -8,7 +8,8 @@ const Logout = () => {
     useEffect(() => {
         const handleLogout = async () => {
             try {
-                await axios.post("/auth/api/logout/", {}, { withCredentials: true });
+                let url = `${process.env.REACT_APP_AUTH_SERVICE}/auth/api/logout/`
+                await axios.post(url, {}, { withCredentials: true });
                 localStorage.removeItem("user");
                 navigate("/");
             } catch (error) {

@@ -19,8 +19,8 @@ func CreateProduct(product *model.Product) error {
 	return db.DB.Create(product).Error
 }
 
-func GetProducts() ([]model.Product, error) {
+func GetProducts(f filters) ([]model.Product, error) {
 	var products []model.Product
-	result := db.DB.Find(&products)
+	result := db.DB.Find(&products, f)
 	return products, result.Error
 }

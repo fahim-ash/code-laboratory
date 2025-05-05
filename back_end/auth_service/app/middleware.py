@@ -19,7 +19,7 @@ class JWTMiddleware(MiddlewareMixin):
         request.user = AnonymousUser()
         resolver_match = resolve(request.path)
         view_name = resolver_match.view_name
-        excluded_views = ["login", "register"]
+        excluded_views = ["login", "register", "logout"]
         if view_name in excluded_views:
             return None
 
@@ -41,18 +41,20 @@ class JWTMiddleware(MiddlewareMixin):
         if hasattr(response, 'data') and isinstance(response.data, dict):
             access_token = response.data.get('access')
 
-        if access_token:
-            try:
-                response.set_cookie(
-                    key='jwt',
-                    value=access_token,
-                    httponly=True,
-                    secure=True,
-                    samesite='None',
-                    path='/',
-                )
+        resolver_match = resolve(request.path)
+        view_name = resolver_match.view_name
+        excluded_views = ["logout"]
+        if view_name not in excluded_views:
+            if access_token:
+                try:
+                    response.set_cookie(
+                        key='jwt',
+                        value=access_token,
+                        samesite='None',
+                        path='/',
+                    )
 
-            except Exception as e:
-                print("Authentication Error:", e)
+                except Exception as e:
+                    print("Authentication Error:", e)
 
         return response
